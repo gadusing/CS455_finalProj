@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">GPS info</string>
+    <string name="full_loc_name">Loc:</string>
+    <string name="button_get_name">Get GPS loc</string>
+    <string name="lat_name">Lat:</string>
+    <string name="def_val_gps">0.00</string>
+    <string name="long_name">Long:</string>
+    <string name="diff_name">Dist remaining</string>
+    <string name="dist_data">42</string>
+    <string name="temp_but_name">Set target Gps</string>
+    <string name="guess_name">Guess</string>
+    <string name="target_name">Target</string>
 </resources>

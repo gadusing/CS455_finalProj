@@ -10,9 +10,9 @@
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loc:"
+        android:text="@string/full_loc_name"
         app:layout_constraintBottom_toTopOf="@+id/getLoc"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,22 +21,35 @@
         android:id="@+id/getLoc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get GPS loc"
+        android:text="@string/button_get_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
 
+<!--    topleft-->
+    <TextView
+        android:id="@+id/tv_lbl_guess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guess_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tv_lbl_lat"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Lat:"
+        android:layout_marginTop="10dp"
+        android:text="@string/lat_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_lbl_guess"/>
 
 
 
@@ -44,7 +57,7 @@
         android:id="@+id/tv_data_lat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0.00"
+        android:text="@string/def_val_gps"
         app:layout_constraintStart_toEndOf="@+id/tv_lbl_lat"
         app:layout_constraintTop_toTopOf="@+id/tv_lbl_lat" />
 
@@ -54,7 +67,9 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Long:"
+        android:text="@string/long_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_lbl_lat" />
 
@@ -62,9 +77,87 @@
         android:id="@+id/tv_data_long"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0.00"
+        android:text="@string/def_val_gps"
         app:layout_constraintStart_toEndOf="@+id/tv_lbl_long"
         app:layout_constraintTop_toTopOf="@+id/tv_lbl_long" />
+
+    <TextView
+        android:id="@+id/tv_lbl_diff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diff_name"
+        app:layout_constraintBottom_toTopOf="@+id/getLoc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.313" />
+
+    <TextView
+        android:id="@+id/tv_data_diff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dist_data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lbl_diff" />
+
+    <Button
+        android:id="@+id/getTarget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/temp_but_name"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getLoc" />
+
+    <TextView
+        android:id="@+id/tv_lbl_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/target_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_data_tarLat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/def_val_gps"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lbl_target"/>
+
+    <TextView
+        android:id="@+id/tv_lbl_tarLat"
+        android:layout_width="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lat_name"
+        app:layout_constraintEnd_toStartOf="@+id/tv_data_tarLat"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lbl_target"/>
+
+    <TextView
+        android:id="@+id/tv_data_tarLon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/def_val_gps"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_data_tarLat"/>
+
+    <TextView
+        android:id="@+id/tv_lbl_tarLon"
+        android:layout_width="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/long_name"
+        app:layout_constraintEnd_toStartOf="@+id/tv_data_tarLon"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lbl_tarLat"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

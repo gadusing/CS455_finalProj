@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+//import java.util.concurrent.ThreadLocalRandom;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -20,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient client;
 
-    TextView tv_data_long, tv_data_lat;
+    TextView tv_data_long, tv_data_lat, tv_data_tarLon, tv_data_tarLat, tv_data_diff;
+    Double tarLon, tarLat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
         tv_data_long = findViewById(R.id.tv_data_long);
         tv_data_lat = findViewById(R.id.tv_data_lat);
+        tv_data_tarLon = findViewById(R.id.tv_data_tarLon);
+        tv_data_tarLat = findViewById(R.id.tv_data_tarLat);
+        tv_data_diff = findViewById(R.id.tv_data_diff);
 
 
         client = LocationServices.getFusedLocationProviderClient(this);
-        Button button = findViewById(R.id.getLoc);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button buttonGuess = findViewById(R.id.getLoc);
+        buttonGuess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -54,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                             tv_data_long.setText(String.valueOf(location.getLongitude()));
                             tv_data_lat.setText(String.valueOf(location.getLatitude()));
 
+
                         }
 
                     }
@@ -61,6 +70,59 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        Button buttonTarget = findViewById(R.id.getTarget);
+        buttonTarget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermission();
+                    return;
+                }
+
+                client.getLastLocation().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if(location != null){
+//                            TextView textView = findViewById(R.id.location);
+//                            textView.setText(location.toString());
+
+                            double latMod = BigDecimal.valueOf((Math.random())/1000).setScale(6, RoundingMode.CEILING).doubleValue();
+                            double lonMod = BigDecimal.valueOf((Math.random())/1000).setScale(6, RoundingMode.CEILING).doubleValue();
+
+                            if (Math.random() > 0.5) {
+                                latMod = latMod * -1;
+                            }
+
+                            if (Math.random() > 0.5) {
+                                lonMod = lonMod * -1;
+                            }
+
+                            tv_data_tarLon.setText(String.valueOf(location.getLongitude() + lonMod));
+                            tv_data_tarLat.setText(String.valueOf(location.getLatitude() + latMod));
+
+                            tarLon = location.getLongitude() + lonMod;
+                            tarLat = location.getLatitude() + latMod;
+
+                            // try distance
+
+                            float[] results = new float[1];
+                            Location.distanceBetween(tarLat, tarLon,
+                                    location.getLatitude(), location.getLongitude(), results);
+
+                            tv_data_diff.setText(String.valueOf(results[0]) + "km");
+                        }
+
+                    }
+                });
+
+
+
+
+
+            }
+        });
+
     }
 
     private void requestPermission() {
