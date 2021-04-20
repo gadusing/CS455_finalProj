@@ -43,84 +43,72 @@ public class MainActivity extends AppCompatActivity {
 
         client = LocationServices.getFusedLocationProviderClient(this);
         Button buttonGuess = findViewById(R.id.getLoc);
-        buttonGuess.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonGuess.setOnClickListener(v -> {
 
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                     requestPermission();
-                     return;
+            if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                 requestPermission();
+                 return;
+            }
+
+            client.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+                if(location != null){
+                    TextView textView = findViewById(R.id.location);
+                    textView.setText(location.toString());
+
+                    tv_data_long.setText(String.valueOf(location.getLongitude()));
+                    tv_data_lat.setText(String.valueOf(location.getLatitude()));
+
                 }
 
-                client.getLastLocation().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if(location != null){
-                            TextView textView = findViewById(R.id.location);
-                            textView.setText(location.toString());
+            });
 
-                            tv_data_long.setText(String.valueOf(location.getLongitude()));
-                            tv_data_lat.setText(String.valueOf(location.getLatitude()));
-
-
-                        }
-
-                    }
-                });
-
-            }
         });
 
         Button buttonTarget = findViewById(R.id.getTarget);
-        buttonTarget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermission();
-                    return;
-                }
+        buttonTarget.setOnClickListener(v -> {
+            if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermission();
+                return;
+            }
 
-                client.getLastLocation().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if(location != null){
+            client.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+                if(location != null){
 //                            TextView textView = findViewById(R.id.location);
 //                            textView.setText(location.toString());
 
-                            double latMod = BigDecimal.valueOf((Math.random())/1000).setScale(6, RoundingMode.CEILING).doubleValue();
-                            double lonMod = BigDecimal.valueOf((Math.random())/1000).setScale(6, RoundingMode.CEILING).doubleValue();
+                    double latMod = BigDecimal.valueOf((Math.random())/1000).setScale(6, RoundingMode.CEILING).doubleValue();
+                    double lonMod = BigDecimal.valueOf((Math.random())/1000).setScale(6, RoundingMode.CEILING).doubleValue();
 
-                            if (Math.random() > 0.5) {
-                                latMod = latMod * -1;
-                            }
-
-                            if (Math.random() > 0.5) {
-                                lonMod = lonMod * -1;
-                            }
-
-                            tv_data_tarLon.setText(String.valueOf(location.getLongitude() + lonMod));
-                            tv_data_tarLat.setText(String.valueOf(location.getLatitude() + latMod));
-
-                            tarLon = location.getLongitude() + lonMod;
-                            tarLat = location.getLatitude() + latMod;
-
-                            // try distance
-
-                            float[] results = new float[1];
-                            Location.distanceBetween(tarLat, tarLon,
-                                    location.getLatitude(), location.getLongitude(), results);
-
-                            tv_data_diff.setText(String.valueOf(results[0]) + "km");
-                        }
-
+                    if (Math.random() > 0.5) {
+                        latMod = latMod * -1;
                     }
-                });
+
+                    if (Math.random() > 0.5) {
+                        lonMod = lonMod * -1;
+                    }
+
+                    tarLon = location.getLongitude() + lonMod;
+                    tarLat = location.getLatitude() + latMod;
+
+                    double lonDisp = BigDecimal.valueOf(tarLon).setScale(4, RoundingMode.CEILING).doubleValue();
+                    double latDisp = BigDecimal.valueOf(tarLat).setScale(4, RoundingMode.CEILING).doubleValue();
+
+                    tv_data_tarLon.setText(String.valueOf(lonDisp));
+                    tv_data_tarLat.setText(String.valueOf(latDisp));
 
 
 
+                    // try distance
 
+                    float[] results = new float[1];
+                    Location.distanceBetween(tarLat, tarLon,
+                            location.getLatitude(), location.getLongitude(), results);
 
-            }
+                    tv_data_diff.setText(String.valueOf(results[0]) + "meters");
+                }
+
+            });
+
         });
 
     }
@@ -128,6 +116,6 @@ public class MainActivity extends AppCompatActivity {
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
-
+//    https://developer.android.com/reference/android/location/Location
 
 }
